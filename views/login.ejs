@@ -1,0 +1,14 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Регистрация</title>
+  </head>
+  <body>
+    <h1>Login</h1>
+    <%- include('./partials/messages') %>
+    <form action="/users/login" method="POST">
+      <a href="/users/register">register</a>
+      <button type="submit">Login</button>
+    </form>
+  </body>
+</html>

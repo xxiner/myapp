@@ -1,0 +1,48 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Регистрация</title>
+  </head>
+  <body>
+    <form action="/users/register" method="POST">
+      <div>
+        <h1>Register</h1>
+        <%- include('./partials/messages') %>
+        <div>
+          <label for="login">Login</label>
+          <input
+            type="text"
+            id="login"
+            name="login"
+            value="<%=typeof login != 'undefined' ? login: '' %>"
+            required
+          />
+        </div>
+        <div>
+          <label for="password">password</label>
+          <input
+            type="password"
+            id="password"
+            name="password"
+            value="<%=typeof password != 'undefined' ? password: '' %>"
+            required
+          />
+        </div>
+        <div>
+          <label for="repassword">re:password</label>
+          <input
+            type="password"
+            name="repassword"
+            id="repassword"
+            value="<%=typeof repassword !='undefined' ? repassword: '' %>"
+            required
+          />
+        </div>
+        <div>
+          <button type="submit">Register</button>
+        </div>
+      </div>
+    </form>
+  </body>
+  <a href="/users/login">Login</a>
+</html>
