@@ -4,7 +4,11 @@ const app = express();
 const mongoose = require("mongoose");
 const flash = require("connect-flash");
 const session = require("express-session");
+const passport = require("passport");
 require("dotenv").config();
+
+//passport config
+require("./config/passport")(passport);
 
 //DB config
 const db = process.env.DATABASE_URL;
@@ -32,6 +36,9 @@ app.use(
     saveUninitialized: true,
   })
 );
+//passport
+app.use(passport.initialize());
+app.use(passport.session());
 
 //flash
 app.use(flash());

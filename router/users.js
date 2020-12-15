@@ -3,7 +3,7 @@ const User = require("../models/User");
 const bcrypt = require("bcryptjs");
 const { hash } = require("bcrypt-nodejs");
 const router = express.Router();
-
+const passport = require("passport");
 //regular expresions for user registration
 const loginPattern = new RegExp(/^[a-z0-9_-]{5,16}$/);
 const passwordPattern = new RegExp(/^[a-z0-9_-]{5,16}$/);
@@ -54,7 +54,7 @@ router.post("/register", (req, res) => {
             newUser.password = hash;
             newUser.save().then((user) => {
               console.log("added user " + newUser);
-              req.flash("success_msg", "You are now registered");
+              req.flash("success_msg", "You are now registered and can login");
               res.redirect("/users/login");
             });
           });
@@ -70,6 +70,13 @@ router.post("/register", (req, res) => {
       errors,
     });
   }
+});
+//login handle
+router.post("/login", (req, res, next) => {
+  passport.authenticate("local", {
+    successRedirect: "/",
+    failureRedirect: "/users/login",
+  })(req, res, next);
 });
 
 module.exports = router;
