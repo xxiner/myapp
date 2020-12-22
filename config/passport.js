@@ -7,30 +7,39 @@ const bcrypt = require("bcryptjs");
 const User = require("../models/User");
 module.exports = function (passport) {
   passport.use(
-    new localStrategy({ usernameField: "login" }, (login, password, done) => {
-      //match user
-      let errors = [];
-      User.findOne({ login: login })
-        .then((user) => {
-          // no match
-          if (!user) {
-            errors.push("cocl");
-            return done(null, false);
-          }
-          //match
-          bcrypt.compare(password, user.password, (err, ismatch) => {
-            if (err) {
-              throw err;
+    new localStrategy(
+      { passReqToCallback: true, usernameField: "login" },
+      function (req, login, password, done) {
+        //match user
+        User.findOne({ login: login })
+          .then((user) => {
+            // no match
+            if (!user) {
+              return done(
+                null,
+                false,
+                req.flash("success_msg", "No such user")
+              );
             }
-            if (ismatch) {
-              return done(null, user);
-            } else {
-              return done(null, false);
-            }
-          });
-        })
-        .catch((err) => console.log(err));
-    })
+            //match
+            bcrypt.compare(password, user.password, (err, ismatch) => {
+              if (err) {
+                throw err;
+              }
+              if (ismatch) {
+                return done(null, user);
+              } else {
+                return done(
+                  null,
+                  false,
+                  req.flash("success_msg", "Invalid login or password")
+                );
+              }
+            });
+          })
+          .catch((err) => console.log(err));
+      }
+    )
   );
   passport.serializeUser(function (user, done) {
     done(null, user.id);

@@ -56,6 +56,7 @@ app.use("/users", require("./router/users"));
 
 //EJS
 app.set("view engine", "ejs");
+//app.set("views", "/home/xiner/Рабочий стол/myapp/views");
 
 //app start
 const PORT = process.env.PORT || 3001;
